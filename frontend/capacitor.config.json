@@ -1,0 +1,16 @@
+{
+  "appId": "com.vijayflower.app",
+  "appName": "વિજય ફ્લાવર સેન્ટર",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https"
+  },
+  "android": {
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "SpeechRecognition": {
+      "permissions": ["android.permission.RECORD_AUDIO"]
+    }
+  }
+}
