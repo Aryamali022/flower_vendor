@@ -1,7 +1,0 @@
-backend/.venv/
-**/__pycache__/
-*.pyc
-*.log
-.env
-backend/.env
-.git/
