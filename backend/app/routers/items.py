@@ -11,8 +11,7 @@ router = APIRouter(prefix="/items", tags=["items"])
 
 def _out(i: dict) -> ItemOut:
     return ItemOut(id=i["id"], item_name_gujarati=i["item_name_gujarati"],
-                   price=float(i["price"]), active=i["active"],
-                   created_at=i.get("created_at"))
+                   active=i["active"], created_at=i.get("created_at"))
 
 
 @router.get("", response_model=list[ItemOut])
@@ -31,7 +30,6 @@ def list_items(q: str | None = None, active_only: bool = True,
 def add_item(body: ItemCreate, user: CurrentUser = Depends(get_current_user)):
     res = db().table("items").insert({
         "item_name_gujarati": body.item_name_gujarati,
-        "price": body.price,
         "active": body.active,
     }).execute()
     log_action(user.id, "item.create", "item", res.data[0]["id"])

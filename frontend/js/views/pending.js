@@ -36,7 +36,7 @@ function billCard(o, container) {
       <div class="oc-top">
         <div>
           <div class="oc-name">${esc(o.customer_name || "—")}</div>
-          <div class="oc-phone">📞 ${esc(o.customer_mobile || "")}</div>
+          ${o.customer_mobile ? `<div class="oc-phone">📞 ${esc(o.customer_mobile)}</div>` : ""}
           <div class="oc-date">પિકઅપ: ${formatDate(o.pickup_date)}</div>
         </div>
         <div style="text-align:right">

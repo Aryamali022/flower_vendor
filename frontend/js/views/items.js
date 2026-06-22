@@ -1,6 +1,6 @@
 // Item (flower product) management.
 import { api } from "../api.js";
-import { el, esc, money, toast, openModal, closeModal, spinner, empty } from "../ui.js";
+import { el, esc, toast, openModal, closeModal, spinner, empty } from "../ui.js";
 import { attachMic } from "../voice.js";
 
 export async function renderItems(container) {
@@ -21,7 +21,7 @@ export async function renderItems(container) {
 async function load(container, q = "") {
   const list = container.querySelector("#items-list");
   try {
-    const items = await api.get(`/items?active_only=false${q ? `&q=${encodeURIComponent(q)}` : ""}`);
+    const items = await api.get(`/items${q ? `?q=${encodeURIComponent(q)}` : ""}`);
     if (!items.length) { list.innerHTML = empty("🌹", "કોઈ વસ્તુ નથી"); return; }
     list.innerHTML = "";
     items.forEach(i => list.appendChild(itemRow(i, container)));
@@ -31,8 +31,7 @@ async function load(container, q = "") {
 function itemRow(i, container) {
   const row = el(`
     <div class="item-row ${i.active ? "" : "inactive"}">
-      <div><div class="nm">${esc(i.item_name_gujarati)}</div>
-        <div class="pr">${money(i.price)}</div></div>
+      <div><div class="nm">${esc(i.item_name_gujarati)}</div></div>
       <div class="row" style="gap:6px">
         <button class="btn btn-secondary btn-sm edit">✏️</button>
         <button class="btn btn-ghost btn-sm del">🗑</button>
@@ -53,9 +52,8 @@ function itemForm(item = null, container) {
     <div>
       <h2>${isEdit ? "વસ્તુ સંપાદિત કરો" : "નવી વસ્તુ"}</h2>
       <div class="field"><label>વસ્તુ નામ (ગુજરાતી)</label>
-        <input id="it-name" value="${esc(item?.item_name_gujarati || "")}" placeholder="ગુલાબનો બુકે" /></div>
-      <div class="field"><label>ભાવ (₹)</label>
-        <input id="it-price" type="number" min="0" value="${item?.price ?? ""}" placeholder="250" /></div>
+        <input id="it-name" value="${esc(item?.item_name_gujarati || "")}" placeholder="ગુલાબનો બુકે" />
+        <div class="hint">ભાવ ઓર્ડર સમયે નક્કી થશે</div></div>
       ${isEdit ? `<div class="field"><label><input type="checkbox" id="it-active"
           ${item.active ? "checked" : ""}/> સક્રિય</label></div>` : ""}
       <button class="btn btn-primary btn-lg" id="it-save">સેવ કરો</button>
@@ -66,14 +64,13 @@ function itemForm(item = null, container) {
 
   body.querySelector("#it-save").onclick = async () => {
     const name = body.querySelector("#it-name").value.trim();
-    const price = parseFloat(body.querySelector("#it-price").value);
-    if (!name || isNaN(price)) { body.querySelector("#it-err").textContent = "નામ અને ભાવ ભરો"; return; }
+    if (!name) { body.querySelector("#it-err").textContent = "નામ ભરો"; return; }
     try {
       if (isEdit) {
         const active = body.querySelector("#it-active").checked;
-        await api.put(`/items/${item.id}`, { item_name_gujarati: name, price, active });
+        await api.put(`/items/${item.id}`, { item_name_gujarati: name, active });
       } else {
-        await api.post("/items", { item_name_gujarati: name, price, active: true });
+        await api.post("/items", { item_name_gujarati: name, active: true });
       }
       toast("વસ્તુ સેવ થઈ", "ok");
       closeModal();

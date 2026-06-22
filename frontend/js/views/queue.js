@@ -90,14 +90,14 @@ function filterCards(q) {
 
 function orderCard(o, container) {
   const itemsText = o.items.map(i => `${esc(i.item_name)} ×${i.quantity}`).join("، ");
-  const searchKey = `${o.customer_name} ${o.customer_mobile} ${itemsText}`.toLowerCase();
+  const searchKey = `${o.customer_name || ""} ${o.customer_mobile || ""} ${itemsText}`.toLowerCase();
   const card = el(`
     <div class="order-card ${o.is_late ? "late" : ""}" data-search="${esc(searchKey)}">
       ${o.is_late ? `<div class="late-badge">🚨 મોડો ઓર્ડર</div>` : ""}
       <div class="oc-top">
         <div>
           <div class="oc-name">${esc(o.customer_name || "—")}</div>
-          <div class="oc-phone">📞 ${esc(o.customer_mobile || "")}</div>
+          ${o.customer_mobile ? `<div class="oc-phone">📞 ${esc(o.customer_mobile)}</div>` : ""}
         </div>
         <div>
           <div class="oc-time">🕐 ${formatTime(o.pickup_time)}</div>

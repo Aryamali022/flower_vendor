@@ -20,16 +20,22 @@ def search_customers(q: str | None = None, user: CurrentUser = Depends(get_curre
     if q:
         # match by name OR mobile
         query = query.or_(f"name_gujarati.ilike.%{q}%,mobile.ilike.%{q}%")
-    res = query.order("name_gujarati").limit(50).execute()
+    res = query.order("name_gujarati").limit(500).execute()
     return [_out(c) for c in res.data]
 
 
 @router.post("", response_model=CustomerOut, status_code=201)
 def create_customer(body: CustomerCreate, user: CurrentUser = Depends(get_current_user)):
-    exists = db().table("customers").select("*").eq("mobile", body.mobile).execute()
-    if exists.data:
-        return _out(exists.data[0])  # idempotent on mobile
-    res = db().table("customers").insert(body.model_dump()).execute()
+    if body.mobile:
+        exists = db().table("customers").select("*").eq("mobile", body.mobile).execute()
+        if exists.data:
+            return _out(exists.data[0])  # idempotent on mobile
+    row = {"name_gujarati": body.name_gujarati}
+    if body.mobile:
+        row["mobile"] = body.mobile
+    if body.notes:
+        row["notes"] = body.notes
+    res = db().table("customers").insert(row).execute()
     return _out(res.data[0])
 
 

@@ -32,18 +32,18 @@ def find_or_create_customer(customer_id: Optional[str],
     """Return a customer id, creating/looking up by mobile when needed."""
     if customer_id:
         return customer_id
-    if not mobile:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY,
-                            "ગ્રાહક અથવા મોબાઇલ નંબર જરૂરી છે")
-    existing = db().table("customers").select("id").eq("mobile", mobile).execute()
-    if existing.data:
-        return existing.data[0]["id"]
+    # repeat customer by mobile (only when a mobile was supplied)
+    if mobile:
+        existing = db().table("customers").select("id").eq("mobile", mobile).execute()
+        if existing.data:
+            return existing.data[0]["id"]
     if not name:
         raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY,
-                            "નવા ગ્રાહક માટે નામ જરૂરી છે")
-    created = db().table("customers").insert(
-        {"name_gujarati": name, "mobile": mobile}
-    ).execute()
+                            "ગ્રાહક પસંદ કરો અથવા નામ ભરો")
+    row = {"name_gujarati": name}
+    if mobile:
+        row["mobile"] = mobile
+    created = db().table("customers").insert(row).execute()
     return created.data[0]["id"]
 
 

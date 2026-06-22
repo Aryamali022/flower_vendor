@@ -59,14 +59,14 @@ class PasswordReset(BaseModel):
 # ========================= CUSTOMERS =========================
 class CustomerCreate(BaseModel):
     name_gujarati: str = Field(min_length=1)
-    mobile: str = Field(pattern=MOBILE_RE)
+    mobile: Optional[str] = Field(default=None, pattern=MOBILE_RE)
     notes: Optional[str] = None
 
 
 class CustomerOut(BaseModel):
     id: str
     name_gujarati: str
-    mobile: str
+    mobile: Optional[str] = None
     notes: Optional[str] = None
     created_at: Optional[datetime] = None
 
@@ -81,20 +81,17 @@ class CustomerHistory(BaseModel):
 # =========================== ITEMS ===========================
 class ItemCreate(BaseModel):
     item_name_gujarati: str = Field(min_length=1)
-    price: float = Field(ge=0)
     active: bool = True
 
 
 class ItemUpdate(BaseModel):
     item_name_gujarati: Optional[str] = None
-    price: Optional[float] = Field(default=None, ge=0)
     active: Optional[bool] = None
 
 
 class ItemOut(BaseModel):
     id: str
     item_name_gujarati: str
-    price: float
     active: bool
     created_at: Optional[datetime] = None
 

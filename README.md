@@ -4,7 +4,7 @@ A production-ready, **Gujarati-first**, mobile-first order management system for
 single flower shop with a few employees. Replaces the handwritten order book with a
 real-time digital queue so **no customer order is ever missed**.
 
-- **Frontend:** HTML + CSS + Vanilla JavaScript (SPA, mobile-first, Capacitor-ready)
+- **Frontend:** HTML + CSS + Vanilla JavaScript (SPA, mobile-first)
 - **Backend:** Python + FastAPI (JWT auth, role-based access)
 - **Database:** Supabase PostgreSQL (full Gujarati Unicode)
 - **Realtime:** Supabase Realtime (live order queue across all devices)
@@ -42,7 +42,6 @@ flowervendor/
 └── frontend/
     ├── index.html
     ├── netlify.toml
-    ├── capacitor.config.json
     ├── css/styles.css
     └── js/
         ├── config.js          ← API URL + Supabase keys (EDIT THIS)
@@ -165,37 +164,6 @@ Already hosted. Keep the `service_role` key secret (backend only).
 
 ---
 
-## 📱 APK Conversion (Capacitor)
-
-The frontend is a self-contained static SPA, so wrapping it in an Android APK is
-straightforward — **no code changes required**.
-
-```bash
-cd frontend
-npm init -y
-npm install @capacitor/core @capacitor/cli @capacitor/android
-
-# capacitor.config.json is already provided (webDir = ".")
-npx cap add android
-npx cap sync android
-
-# open in Android Studio to build / run / generate the APK
-npx cap open android
-```
-
-In Android Studio: **Build → Build Bundle(s)/APK(s) → Build APK(s)**.
-
-**Notes for APK:**
-- Point `API_BASE` in `config.js` to your **public** Render URL (an emulator/phone
-  can't reach `localhost`).
-- Realtime works as-is via the Supabase JS CDN. For a fully offline-capable bundle,
-  download `supabase.min.js` locally and reference it instead of the CDN in
-  `index.html`.
-- The app already sets `viewport`, `theme-color`, safe-area insets and large touch
-  targets, so it behaves like a native app.
-
----
-
 ## 🔒 Security
 
 - **JWT** auth (`python-jose`), 12-hour tokens for long shifts.
@@ -214,8 +182,7 @@ In Android Studio: **Build → Build Bundle(s)/APK(s) → Build APK(s)**.
 
 Designed so these need **no schema redesign**:
 multi-shop (add `shop_id`), WhatsApp/SMS alerts (hook into order events),
-voice/OCR order entry (feed the same `POST /orders`), inventory, thermal printing,
-and the Android APK (already covered above).
+voice/OCR order entry (feed the same `POST /orders`), inventory, and thermal printing.
 
 ---
 

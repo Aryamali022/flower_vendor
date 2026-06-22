@@ -35,7 +35,7 @@ create table if not exists public.employees (
 create table if not exists public.customers (
     id             uuid primary key default uuid_generate_v4(),
     name_gujarati  text        not null,
-    mobile         text        not null unique,
+    mobile         text        unique,   -- optional: customers can be name-only
     notes          text,
     created_at     timestamptz not null default now()
 );

@@ -158,9 +158,10 @@ button{font-family:inherit}
 .hint{font-size:13px;color:var(--muted);margin-top:4px}
 
 /* item line in new order */
-.item-line{display:flex;gap:8px;align-items:center;margin-bottom:8px;
+.item-line{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-bottom:8px;
   background:#faf7f8;border-radius:12px;padding:8px}
 .item-line select{flex:2}
+.item-line .ci-name{flex:1 1 100%;width:auto;text-align:left}
 .item-line input{width:64px;text-align:center}
 .item-line .price{width:80px}
 .item-line .del{background:var(--pink-light);color:var(--pink-dark);border:none;
@@ -257,15 +258,19 @@ button{font-family:inherit}
 .with-mic input,.with-mic textarea{padding-right:54px}
 
 /* ---------- checkbox item picker ---------- */
-.item-pick{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--border);
-  border-radius:12px;padding:10px 12px;margin-bottom:8px;cursor:pointer}
-.item-pick.checked{border-color:var(--pink);background:#faf7fd}
+.item-pick{display:flex;flex-wrap:wrap;align-items:center;gap:10px;background:#fff;border:2px solid var(--border);
+  border-radius:12px;padding:10px 12px;margin-bottom:8px;cursor:pointer;
+  border-left-width:2px;transition:border-color .15s,background .15s,border-left-width .15s}
+.item-pick.checked{border-color:var(--pink);background:#faf7fd;border-left-width:6px}
 .item-pick .cb{width:24px;height:24px;accent-color:var(--pink);flex:0 0 auto}
 .item-pick .ip-name{flex:1;font-size:16px;font-weight:600}
-.item-pick .ip-price{color:var(--green);font-weight:700;font-size:14px}
-.item-pick .ip-qty{display:none;width:62px;text-align:center;padding:8px;
+.item-pick .ip-qtywrap{display:none;align-items:center;gap:6px;flex:0 0 auto}
+.item-pick.checked .ip-qtywrap{display:flex}
+.item-pick .ip-qty-label{font-size:12px;color:var(--pink-dark);font-weight:600}
+.item-pick .ip-qty{width:62px;text-align:center;padding:8px;
   border:2px solid var(--pink-light);border-radius:10px;font-size:16px}
-.item-pick.checked .ip-qty{display:block}
+.item-pick .ip-price{width:90px;text-align:center;padding:8px;
+  border:2px solid var(--pink-light);border-radius:10px;font-size:16px}
 
 /* ---------- AM/PM time picker ---------- */
 .timepick{display:flex;gap:8px;align-items:center}

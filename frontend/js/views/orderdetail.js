@@ -17,7 +17,7 @@ export async function openOrderDetail(orderId, onChange) {
 
   body.innerHTML = `
     <h2>${esc(o.customer_name || "—")}</h2>
-    <p class="muted">📞 ${esc(o.customer_mobile || "")}</p>
+    ${o.customer_mobile ? `<p class="muted">📞 ${esc(o.customer_mobile)}</p>` : ""}
     ${o.is_late ? `<div class="late-badge">🚨 મોડો ઓર્ડર</div>` : ""}
 
     <div class="detail-row"><span class="k">પિકઅપ</span>
