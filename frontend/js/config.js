@@ -1,8 +1,10 @@
 // App configuration.
 // For production, replace these values (or generate this file at build time).
 export const CONFIG = {
-  // FastAPI backend base URL (no trailing slash)
-  API_BASE: "http://localhost:8000",
+  // Backend is served from the same origin as the frontend, so calls are
+  // relative ("" + "/auth/login" -> "/auth/login"). Works locally (uvicorn on
+  // :8000 serves this page too) and in production (one combined service).
+  API_BASE: "",
 
   // Supabase — used ONLY for realtime subscriptions (anon public key, safe to ship)
   SUPABASE_URL: "https://fuyblbggwisryhzgdfzu.supabase.co",
